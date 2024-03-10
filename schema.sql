@@ -1,0 +1,27 @@
+CREATE TABLE product_category (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  modified_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  deleted_at DATETIME DEFAULT NULL
+);
+
+CREATE TABLE product (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  sku VARCHAR(50) UNIQUE,
+  inventory_id INT UNSIGNED,
+  price DECIMAL(10,2) NOT NULL,
+  discount_id INT UNSIGNED,
+  category_id INT UNSIGNED NOT NULL,
+  CONSTRAINT fk_product_category FOREIGN KEY (category_id) REFERENCES product_category(id),
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  modified_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  deleted_at DATETIME DEFAULT NULL
+);
+
+ALTER TABLE product ADD CONSTRAINT fk_product_inventory FOREIGN KEY (inventory_id) REFERENCES inventory(id);
+
+ALTER TABLE product ADD CONSTRAINT fk_product_discount FOREIGN KEY (discount_id) REFERENCES discount(id);
